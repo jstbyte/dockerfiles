@@ -1,0 +1,26 @@
+FROM alpine
+
+RUN apk add --no-cache --update nodejs yarn
+
+RUN addgroup -S node && adduser -S node -G node
+
+USER node
+
+# Your Custom Code Goes Here.
+# Copy File With Node User Permission add "--chown=node:node";
+
+RUN mkdir /home/node/app
+
+WORKDIR /home/node/app
+
+COPY --chown=node:node package*.json ./
+
+RUN yarn
+
+COPY . .
+
+EXPOSE 3000
+
+# RUN yarn build
+
+# CMD ["yarn", "start"]
